@@ -40,5 +40,11 @@ router.get('/projeto/visualizar/:idProjeto', (req, res) =>{
     })
 })
 
+router.get('/projeto/consulta', (req, res) =>{
+    var response = db.query('SELECT * FROM PROJETO').then(response =>{
+        res.json(response.rows)
+    })
+})
+
 
 module.exports = router

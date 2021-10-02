@@ -34,5 +34,10 @@ router.get('/projeto/consulta', (req, res) =>{
     })
 })
 
+router.post('/projeto/cadastro-arquivo', (req, res) => {
+    console.log('assa');
+    res.json({file: 'yeah'});
+});
+
 
 module.exports = router

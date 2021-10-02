@@ -105,7 +105,9 @@ while (tries > 0) {
                       CONSTRAINT cursa_DISCIPLINA_FK FOREIGN KEY (disciplina_id)
                           REFERENCES DISCIPLINA(id)
                     );
-                    `, (err, res) => {
+
+                `
+                    (err, res) => {
                         if (err) {
                             console.log("Failed creating Database");
                             console.log(err);

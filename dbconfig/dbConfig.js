@@ -30,7 +30,8 @@ while (tries > 0) {
                     });
                 }
 
-                else if (res.rowCount != 13)
+
+                else if (res.rowCount != dbSchema.DBSCHEMALEN)
                     throw '\x1b[33mFaulty database in project\n\x1b[33mDelete dbdata and start project again';
 
                 else

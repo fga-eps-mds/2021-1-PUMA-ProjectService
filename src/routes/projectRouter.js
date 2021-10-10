@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../../dbconfig/dbConfig');
-const ProjectController = require("../controller/ProjectController");
+const projectController = require("../controller/projectController");
 
 router.post('/upload', async (req, res) => {
     console.log(req.body)
@@ -13,7 +13,7 @@ router.post('/upload', async (req, res) => {
 
 router.post('/projeto/cadastro', async function(req, res) {//Falta tratamento dos dados
     try {
-        res.json(await project.create(req.body));
+        res.json(projectController.register(req.body));
     } catch (err) {
         console.error('Erro durante a criação do projeto', err.message);
     }

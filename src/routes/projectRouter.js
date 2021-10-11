@@ -1,36 +1,43 @@
 const express = require("express");
 const router = express.Router();
+const projectController = require('../controller/ProjectController')
 const db = require('../../dbconfig/dbConfig');
-const ProjectController = require("../controller/ProjectController");
+const {response} = require("express");
 
 router.post('/upload', async (req, res) => {
-    console.log(req.body)
-    const arquivo = {filename: req.files['file']['name'], bytecontent: req.files['file']['data'], projectid: req.body.projectid}
-    db.query('INSERT INTO FILE(filename,bytecontent,projectid) VALUES ($1,$2,$3) RETURNING *', [arquivo.filename,arquivo.bytecontent,arquivo.projectid]);
-    res.send(arquivo);
-        // res.sendStatus(400);
+    console.log(req.body);
+    projectController.addFile(req.body).then((response) => {
+        res.status(200).json({ response });
+
+    }).catch((response) => {
+        console.log(response);
+
+        res.status(400).json({ response });
+
+    });
 });
 
-router.post('/projeto/cadastro', async function(req, res) {//Falta tratamento dos dados
-    try {
-        res.json(await project.create(req.body));
-    } catch (err) {
-        console.error('Erro durante a criação do projeto', err.message);
-    }
+router.post('/projeto/cadastro', (req, res) => {//Falta tratamento dos dados
+    projectController.addProject(req.body).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
+        res.status(400).json({ response });
+    });
+
+});
+
+router.post('/projeto/deletar/:projectId', (req, res) => {//Falta tratamento dos dados
+    projectController.deleteProject(req.params.projectId).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
+        res.status(400).json({ response });
+    });
 });
 
 router.get('/projeto/visualizar-arquivo/:idArquivo', (req, res) =>{
     var response = db.query('SELECT f.bytecontent, f.filename FROM FILE as f WHERE fileid=$1', [req.params.idArquivo]).then(response =>{
         res.json(response.rows)
     })
-});
-
-router.post('/projeto/cadastro', async function(req, res) {
-    try {
-        res.json(await project.create(req.body));
-    } catch (err) {
-        console.error('Erro durante a criação do projeto', err.message);
-    }
 });
 
 router.get('/projeto/visualizar/:idProjeto', (req, res) => {
@@ -40,6 +47,14 @@ router.get('/projeto/visualizar/:idProjeto', (req, res) => {
     .catch((response) => {
         res.status(400);
     })
+});
+
+router.get('/areas-conhecimento', (req, res) => {
+    projectController.getKnowledgeAreas(req.body).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
+        res.status(400).json({ response });
+    });
 });
 
 router.get('/projeto/consulta', (req, res) =>{

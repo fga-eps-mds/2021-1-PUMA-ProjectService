@@ -1,36 +1,102 @@
 const db = require('../../dbconfig/dbConfig');
 
-/*
-CREATE TABLE PROJECT (
-      projectId SERIAL,
-      name varchar(50) NOT NULL,
-      problem VARCHAR(100) NOT NULL,
-      expectedResult VARCHAR(500) NOT NULL,
-      status stats DEFAULT 'Em alocacao' NOT NULL,
-      userId SERIAL NOT NULL,
-      subjectId SERIAL NOT NULL,
-      CONSTRAINT PROJECT_PK PRIMARY KEY (projectId),
-      CONSTRAINT PROJECT_COMMON_USER_FK FOREIGN KEY (userId)
-        REFERENCES COMMON_USER (userId),
-      CONSTRAINT PROJECT_SUBJECT_FK FOREIGN KEY (subjectId)
-        REFERENCES SUBJECT (subjectId)
-  );
-*/
-
-function create(newProject){
+function addProject(project) {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO PROJETO(descricao,concluido,aprovado,agente_externo,disciplina_aloc) VALUES ($1,$2,$3,$4,$5) RETURNING *;', 
-                    [newProject.descricao,newProject.concluido,newProject.aprovado,newProject.agente_externo,newProject.disciplina_aloc]
-        )
-        .then((response) => {
-            resolve(response.rows[0].newProjectId);
-        })
-        .catch((response) => {
+        db.query(
+            'INSERT INTO PROJECT(name,problem,expectedresult,status,userid,subjectid) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
+            [project.name, project.problem, project.expectedresult, project.status, project.userid, project.subjectid]
+        ).then((response) => {
+            resolve(response.rows[0].projectid);
+        }).catch((response) => {
             reject(response);
         });
     });
 }
 
+function addFile(file) {
+    return new Promise((resolve, reject) => {
+        // console.log(file.bytecontent);
+        db.query(
+            'INSERT INTO FILE(filename,bytecontent,projectid) VALUES ($1,$2,$3) RETURNING *',
+            [file.filename, file.bytecontent, file.projectid]
+        ).then((response) => {
+            resolve(response.rows[0].fileid);
+        }).catch((response) => {
+                console.log(response);
+                reject(response);
+        });
+    });
+}
+
+function retriveProjects() {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM PROJECT')
+            .then((response) => {
+            resolve(response.rows)
+        }).catch((response) => {
+            reject(response);
+        });
+    });
+}
+
+function retriveProject(projectid) {
+    return new Promise((resolve,reject) => {
+        db.query(
+            'SELECT p.name, p.problem,p.expectedresult,p.status FROM PROJECT as p WHERE projectid=$1',
+            [projectid]
+        )
+            .then((response) => {
+                resolve(response.rows);
+             })
+            .catch((response) => {
+            reject(response);
+        });
+    });
+}
+
+function deleteProject(projectId) {
+    return new Promise((resolve, reject) => {
+        db.query(
+            'DELETE FROM PROJECT WHERE projectid = $1 RETURNING *',
+            [projectId]
+        ).then((response) => {
+            resolve(response);
+        }).catch((response) => {
+            reject(response);
+        });
+    });
+}
+
+function getKnowledgeAreas() {
+    return new Promise((resolve, reject) => {
+        db.query(
+            'SELECT * FROM KNOWLEDGE_AREA',
+        ).then((response) => {
+            resolve(response.rows);
+        }).catch((response) => {
+            reject(response);
+        });
+    });
+}
+
+function addProjectKnowledgeAreasRelation(projectId, knowledgeAreas) {
+    const areas = [];
+    knowledgeAreas.forEach((area) => {
+        areas.push([area.knoledgeareaid, projectId]);
+    });
+    return new Promise((resolve, reject) => {
+        areas.forEach((area) => {
+            db.query(
+                'INSERT INTO HAS (knoledgeareaid, projectid) VALUES ($1,$2) ', [area[0],area[1]]
+            ).then((response) => {
+                resolve(response.rows);
+            }).catch((response) => {
+                reject(response);
+            });
+        });
+    });
+}
+
 module.exports = {
-    create
+    addProject, retriveProjects, retriveProject, addFile, deleteProject, getKnowledgeAreas, addProjectKnowledgeAreasRelation
 }

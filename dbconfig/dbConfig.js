@@ -22,7 +22,7 @@ while (tries > 0) {
                 if (!res.rowCount) {
                     console.log("Database not found");
                     console.log("Creating");
-                    // eslint-disable-next-line no-unused-vars
+
                     pool.query(dbSchema.DBSCHEMA , (err, res) => {
                         if (err) {
                             console.log("Failed creating Database");

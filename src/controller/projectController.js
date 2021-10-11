@@ -11,6 +11,17 @@ function register(newProject){
     });
 }
 
+function getKnowledgeAreas() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await projectRepository.getKnowledgeAreas();
+        } catch (error) {
+            reject(error);
+        }
+        resolve();
+    });
+}
+
 module.exports = {
-    register
+    register, getKnowledgeAreas
 };

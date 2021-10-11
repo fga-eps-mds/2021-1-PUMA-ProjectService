@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const projectController = require('../controller/ProjectController')
 const db = require('../../dbconfig/dbConfig');
+const projectController = require("../controller/projectController");
 const {response} = require("express");
 
 router.post('/upload', async (req, res) => {

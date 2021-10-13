@@ -32,7 +32,7 @@ while (tries > 0) {
           }
         });
       } else if (res.rowCount !== dbSchema.DBSCHEMALEN) {
-        throw new Error('\x1b[33mFaulty database in project\n\x1b[33mDelete dbdata and start project again');
+        throw new Error('\x1b[33mFaulty database in project\n\x1b[33mDelete dbdata and start project again')
       }
 
       else {

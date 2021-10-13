@@ -1,19 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const db = require('../../dbconfig/dbConfig');
-const projectController = require("../controller/projectController");
+const projectController = require("../controller/ProjectController");
 const {response} = require("express");
 
 router.post('/upload', async (req, res) => {
     console.log(req.body);
     projectController.addFile(req.body).then((response) => {
         res.status(200).json({ response });
-
     }).catch((response) => {
         console.log(response);
-
         res.status(400).json({ response });
-
     });
 });
 

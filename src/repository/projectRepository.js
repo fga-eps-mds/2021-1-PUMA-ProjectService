@@ -15,7 +15,6 @@ function addProject(project) {
 
 function addFile(file) {
     return new Promise((resolve, reject) => {
-        // console.log(file.bytecontent);
         db.query(
             'INSERT INTO FILE(filename,bytecontent,projectid) VALUES ($1,$2,$3) RETURNING *',
             [file.filename, file.bytecontent, file.projectid]
@@ -98,5 +97,11 @@ function addProjectKnowledgeAreasRelation(projectId, knowledgeAreas) {
 }
 
 module.exports = {
-    addProject, retriveProjects, retriveProject, addFile, deleteProject, getKnowledgeAreas, addProjectKnowledgeAreasRelation
-}
+    addProject,
+    retriveProjects,
+    retriveProject,
+    addFile,
+    deleteProject,
+    getKnowledgeAreas,
+    addProjectKnowledgeAreasRelation
+};

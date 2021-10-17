@@ -51,4 +51,10 @@ function getKnowledgeAreas() {
         resolve();
     });
 }
-module.exports = { addProject, addFile, deleteProject, getKnowledgeAreas }
+
+module.exports = { 
+    addProject, 
+    addFile, 
+    deleteProject, 
+    getKnowledgeAreas 
+};

@@ -5,29 +5,27 @@ const projectController = require("../controller/ProjectController");
 const {response} = require("express");
 
 router.post('/upload', async (req, res) => {
-    console.log(req.body);
-    projectController.addFile(req.body).then((res) => {
-        res.status(200).json({ res });
-    }).catch(() => {
-        console.log(res);
+    projectController.addFile(req.body).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
         res.status(400).json({ res });
     });
 });
 
 router.post('/projeto/cadastro', (req, res) => {//Falta tratamento dos dados
-    projectController.addProject(req.body).then((res) => {
-        res.status(200).json({ res });
-    }).catch(() => {
-        res.status(400).json({ res });
+    projectController.addProject(req.body).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
+        res.status(400).json({ response });
     });
 
 });
 
 router.post('/projeto/deletar/:projectId', (req, res) => {//Falta tratamento dos dados
-    projectController.deleteProject(req.params.projectId).then((res) => {
-        res.status(200).json({ res });
-    }).catch(() => {
-        res.status(400).json({ res });
+    projectController.deleteProject(req.params.projectId).then((response) => {
+        res.status(200).json({ response });
+    }).catch((response) => {
+        res.status(400).json({ response });
     });
 });
 
@@ -47,10 +45,10 @@ router.get('/projeto/visualizar/:idProjeto', (req, res) => {
 });
 
 router.get('/areas-conhecimento', (req, res) => {
-    projectController.getKnowledgeAreas(req.body).then((res) => {
-        res.status(200).json({ res });
+    projectController.getKnowledgeAreas(req.body).then((response) => {
+        res.status(200).json({ response });
     }).catch(() => {
-        res.status(400).json({ res });
+        res.status(400).json({ response });
     });
 });
 

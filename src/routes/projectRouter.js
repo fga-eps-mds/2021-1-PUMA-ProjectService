@@ -1,61 +1,45 @@
-const express = require("express");
+const express = require('express');
+
 const router = express.Router();
 const db = require('../../dbconfig/dbConfig');
-const projectController = require("../controller/ProjectController");
-const {response} = require("express");
+const projectController = require('../controller/ProjectController');
 
 router.post('/upload', async (req, res) => {
-    projectController.addFile(req.body).then((response) => {
-        res.status(200).json({ response });
-    }).catch((response) => {
-        res.status(400).json({ res });
-    });
+  projectController.addFile(req.body).then((response) => {
+    res.status(200).json({ response });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
 });
 
-router.post('/projeto/cadastro', (req, res) => {//Falta tratamento dos dados
-    projectController.addProject(req.body).then((response) => {
-        res.status(200).json({ response });
-    }).catch((response) => {
-        res.status(400).json({ response });
-    });
-
+router.post('/projeto/cadastro', (req, res) => { // Falta tratamento dos dados
+  projectController.addProject(req.body).then((response) => {
+    res.status(200).json({ response });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
 });
 
-router.post('/projeto/deletar/:projectId', (req, res) => {//Falta tratamento dos dados
-    projectController.deleteProject(req.params.projectId).then((response) => {
-        res.status(200).json({ response });
-    }).catch((response) => {
-        res.status(400).json({ response });
-    });
-});
-
-router.get('/projeto/visualizar-arquivo/:idArquivo', (req, res) =>{
-    db.query('SELECT f.bytecontent, f.filename FROM FILE as f WHERE fileid=$1', [req.params.idArquivo]).then(res =>{
-        res.json(res.rows)
-    })
-});
-
-router.get('/projeto/visualizar/:idProjeto', (req, res) => {
-    db.query('SELECT p.name, p.problem,p.expectedresult,p.status,p.knowledgearea FROM PROJECT as p WHERE projectid=$1', [req.params.idProjeto]).then(res =>{
-        res.json(res.rows)
-    })
-    .catch(() => {
-        res.status(400);
-    })
+router.post('/projeto/deletar/:projectId', (req, res) => { // Falta tratamento dos dados
+  projectController.deleteProject(req.params.projectId).then((response) => {
+    res.status(200).json({ response });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
 });
 
 router.get('/areas-conhecimento', (req, res) => {
-    projectController.getKnowledgeAreas(req.body).then((response) => {
-        res.status(200).json({ response });
-    }).catch(() => {
-        res.status(400).json({ response });
-    });
+  projectController.getKnowledgeAreas(req.body).then((response) => {
+    res.status(200).json({ response });
+  }).catch((response) => {
+    res.status(400).json({ response });
+  });
 });
 
-router.get('/projeto/consulta', (req, res) =>{
-    db.query('SELECT * FROM PROJECT').then(res =>{
-        res.json(res.rows)
-    })
+router.get('/projeto/consulta', () => {
+  db.query('SELECT * FROM PROJECT').then((res) => {
+    res.json(res.rows);
+  });
 });
 
 module.exports = router;

@@ -17,11 +17,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.json({limit: '100mb'}));
-app.use(express.urlencoded({limit: '100mb'}));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-require('./routes/router')(app)
+require('./routes/router')(app);
 
 configRoutes(app);
 

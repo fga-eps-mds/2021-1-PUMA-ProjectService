@@ -29,7 +29,7 @@ router.post('/projeto/deletar/:projectId', (req, res) => { // Falta tratamento d
 });
 
 router.get('/areas-conhecimento', (req, res) => {
-  projectController.getKnowledgeAreas(req.body).then((response) => {
+  projectController.getKnowledgeAreas().then((response) => {
     res.status(200).json({ response });
   }).catch((response) => {
     res.status(400).json({ response });

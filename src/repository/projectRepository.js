@@ -86,10 +86,11 @@ function addProjectKnowledgeAreasRelation(projectId, knowledgeAreas) {
   knowledgeAreas.forEach((area) => {
     areas.push([area.knoledgeareaid, projectId]);
   });
+  console.log(json(areas));
   return new Promise((resolve, reject) => {
     areas.forEach((area) => {
       db.query(
-        'INSERT INTO HAS (knoledgeareaid, projectid) VALUES ($1,$2) ', [area[0], area[1]],
+        'INSERT INTO HAS (knoledgeareaid, projectid) VALUES ($1,$2) ', [area[0], area[1]]
       ).then((response) => {
         resolve(response.rows);
       }).catch((response) => {

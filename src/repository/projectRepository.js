@@ -9,11 +9,7 @@ function addProject(project) {
         project.name, project.problem, project.expectedresult,
         project.status, project.userid, project.subjectid,
       ],
-    ).then((response) => {
-      resolve(response.rows[0].projectid);
-    }).catch((response) => {
-      reject(response);
-    });
+    ).then((response) => resolve(response.rows[0].projectid)).catch((response) => reject(response));
   });
 }
 
@@ -83,16 +79,17 @@ function getKnowledgeAreas() {
 
 function addProjectKnowledgeAreasRelation(projectId, knowledgeAreas) {
   const areas = [];
+
   knowledgeAreas.forEach((area) => {
     areas.push([area.knoledgeareaid, projectId]);
   });
-  console.log(json(areas));
+
   return new Promise((resolve, reject) => {
     areas.forEach((area) => {
       db.query(
-        'INSERT INTO HAS (knoledgeareaid, projectid) VALUES ($1,$2) ', [area[0], area[1]]
+        'INSERT INTO HAS (knoledgeareaid, projectid) VALUES ($1,$2) RETURNING *', [area[0], area[1]],
       ).then((response) => {
-        resolve(response.rows);
+        resolve(response);
       }).catch((response) => {
         reject(response);
       });

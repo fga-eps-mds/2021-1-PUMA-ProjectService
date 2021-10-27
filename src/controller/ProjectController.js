@@ -2,14 +2,14 @@ const projectRepository = require('../repository/projectRepository');
 
 function addProject(project) {
   return new Promise((resolve, reject) => {
-    try {
-      const projectId = projectRepository.addProject(project);
-      projectRepository.addProjectKnowledgeAreasRelation(projectId, project.knowledgeareas);
-      resolve(projectId);
-    } catch (e) {
-      reject(e);
-    }
-    resolve();
+    projectRepository.addProject(project).then((response) => {
+      projectRepository.addProjectKnowledgeAreasRelation(
+        response,
+        project.knowledgeareas,
+      ).then(() => {
+        resolve(response);
+      });
+    }).catch((e) => reject(e));
   });
 }
 

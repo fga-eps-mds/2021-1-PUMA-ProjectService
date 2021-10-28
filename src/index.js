@@ -21,8 +21,6 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-require('./routes/router')(app);
-
-configRoutes(app);
+configRoutes(app)
 
 app.listen(3000);

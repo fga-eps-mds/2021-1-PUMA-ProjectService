@@ -7,6 +7,7 @@ const projectRoutes = require('./projectRouter');
 router.get('/', (req, res) => {
   res.json({
     Project: 'Puma',
+    Service: 'Project Service'
   });
 });
 

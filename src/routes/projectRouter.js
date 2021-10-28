@@ -1,6 +1,6 @@
 const express = require('express');
 
-const router = express.Router();
+const routes = express.Router();
 const db = require('../../dbconfig/dbConfig');
 const projectController = require('../controller/ProjectController');
 const functions = require('../utils/functions')
@@ -93,7 +93,7 @@ routes.put('/proposal/:projectId', (req, res) => {
 
 });
 
-router.post('/upload', async (req, res) => {
+routes.post('/upload', async (req, res) => {
   projectController.addFile(req.body).then((response) => {
     res.status(200).json({ response });
   }).catch((response) => {
@@ -101,7 +101,7 @@ router.post('/upload', async (req, res) => {
   });
 });
 
-router.post('/projeto/cadastro', (req, res) => { // Falta tratamento dos dados
+routes.post('/project', (req, res) => { // Falta tratamento dos dados
   projectController.addProject(req.body).then((response) => {
     res.status(200).json({ response });
   }).catch((response) => {
@@ -109,7 +109,7 @@ router.post('/projeto/cadastro', (req, res) => { // Falta tratamento dos dados
   });
 });
 
-router.post('/projeto/deletar/:projectId', (req, res) => { // Falta tratamento dos dados
+routes.delete('/project/:projectId', (req, res) => { // Falta tratamento dos dados
   projectController.deleteProject(req.params.projectId).then((response) => {
     res.status(200).json({ response });
   }).catch((response) => {
@@ -117,7 +117,7 @@ router.post('/projeto/deletar/:projectId', (req, res) => { // Falta tratamento d
   });
 });
 
-router.get('/areas-conhecimento', (req, res) => {
+routes.get('/areas-conhecimento', (req, res) => {
   projectController.getKnowledgeAreas().then((response) => {
     res.status(200).json({ response });
   }).catch((response) => {
@@ -125,10 +125,10 @@ router.get('/areas-conhecimento', (req, res) => {
   });
 });
 
-router.get('/projeto/consulta', () => {
+routes.get('/project/consulta', () => {
   db.query('SELECT * FROM PROJECT').then((res) => {
     res.json(res.rows);
   });
 });
 
-module.exports = router;
+module.exports = routes;
